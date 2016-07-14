@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>-- Properties File Comments --</comment>
+    <entry key="server_jar">minecraft_server.1.10.2.jar</entry>
+    <entry key="server_workdir">C:\Users\cypher\Documents\IdeaProjects\mua\mcserver</entry>
+    <entry key="mua_usersfile">muausers.json</entry>
+</properties>
