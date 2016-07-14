@@ -1,6 +1,6 @@
 package be.cypherke.mua.db;
 
-import be.cypherke.mua.gsonobjects.User;
+import be.cypherke.mua.gsonobjects.Teleport;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -17,19 +17,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class UsersDb {
-    private List<User> users;
+public class TeleportsDb {
+    private List<Teleport> teleports;
     private String savefile;
 
-    public UsersDb(String savefile) {
-        this.users = new ArrayList<>();
+    public TeleportsDb(String savefile) {
+        this.teleports = new ArrayList<>();
         this.savefile = savefile;
-        loadUsers();
+        loadTeleports();
     }
 
-    private void loadUsers() {
-        if (users != null) {
-            users.clear();
+    private void loadTeleports() {
+        if (teleports != null) {
+            teleports.clear();
         }
         Path path = FileSystems.getDefault().getPath(savefile);
         File file = path.toFile();
@@ -41,9 +41,9 @@ public class UsersDb {
                 e.printStackTrace();
             }
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<User>>() {
+            Type listType = new TypeToken<List<Teleport>>() {
             }.getType();
-            users = gson.fromJson(json, listType);
+            teleports = gson.fromJson(json, listType);
         } else {
             try {
                 FileUtils.touch(file);
@@ -52,23 +52,8 @@ public class UsersDb {
             }
         }
     }
-
-    public User getUser(String player) {
-        if (users != null && users.size() > 0) {
-            for (User u : users) {
-                if (u.getUsername().equalsIgnoreCase(player)) return u;
-            }
-        }
-        return null;
-    }
-
-    public void addUser(User u) {
-        if (this.users == null) this.users = new ArrayList<>();
-        this.users.add(u);
-    }
-
     public void save() {
-        if (users != null) {
+        if (teleports != null) {
             FileWriter file = null;
             try {
                 file = new FileWriter(savefile);
@@ -76,8 +61,8 @@ public class UsersDb {
                 e.printStackTrace();
             }
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-            Collections.sort(users, (u1, u2) -> u1.getUsername().compareToIgnoreCase(u2.getUsername()));
-            String json = gson.toJson(users);
+            Collections.sort(teleports, (t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
+            String json = gson.toJson(teleports);
             if (file != null) {
                 try {
                     file.write(json);
@@ -90,13 +75,27 @@ public class UsersDb {
         }
     }
 
-    public String getUserNames() {
-        if (users != null && users.size() > 0) {
-            StringBuilder sb = new StringBuilder();
-            for (User u : users) {
-                sb.append(u.getUsername()).append(" ");
+    public void add(Teleport teleport) {
+        if (this.teleports == null) this.teleports = new ArrayList<>();
+        this.teleports.add(teleport);
+    }
+
+    public String getUserTps(String player) {
+        if (teleports != null && teleports.size() > 0) {
+            StringBuilder tps = new StringBuilder();
+            for (Teleport tp : teleports) {
+                tps.append(tp.getName() + " ");
             }
-            return sb.toString();
+            return tps.toString();
+        }
+        return null;
+    }
+
+    public Teleport getTp(String name) {
+        for (Teleport tp : teleports) {
+            if (tp.getName().equalsIgnoreCase(name)) {
+                return tp;
+            }
         }
         return null;
     }

@@ -5,4 +5,5 @@
     <entry key="server_jar">minecraft_server.1.10.2.jar</entry>
     <entry key="server_workdir">C:\Users\cypher\Documents\IdeaProjects\mua\mcserver</entry>
     <entry key="mua_usersfile">muausers.json</entry>
+    <entry key="mua_teleportsfile">muateleports.json</entry>
 </properties>

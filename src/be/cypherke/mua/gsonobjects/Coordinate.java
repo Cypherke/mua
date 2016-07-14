@@ -12,6 +12,6 @@ public class Coordinate {
     }
 
     public String toString() {
-        return x.intValue() + ", " + y.intValue() + ", " + z.intValue();
+        return x.intValue() + " " + y.intValue() + " " + z.intValue();
     }
 }
