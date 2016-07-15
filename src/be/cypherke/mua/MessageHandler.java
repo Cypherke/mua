@@ -32,7 +32,7 @@ class MessageHandler {
             String function = m.group("function");
             String message = m.group("message");
             // match authenticator message
-            if (function.equalsIgnoreCase("User Authenticator #1/INFO")) {
+            if (function.matches("User Authenticator #[0-9]*/INFO")) {
                 pattern = "UUID of player (?<player>[\\w]*) is (?<uuid>[a-z0-9\\-]*)";
                 m = Pattern.compile(pattern).matcher(message);
                 if (m.matches()) {
@@ -54,6 +54,7 @@ class MessageHandler {
                     u.setIp(m.group("ip"));
                     u.setEntity(m.group("entity"));
                     u.setCoordinate(new Coordinate(Double.valueOf(m.group("x")), Double.valueOf(m.group("y")), Double.valueOf(m.group("z"))));
+                    u.setOnline(true);
                 }
                 pattern = "(?<player>[\\w]*) left the game";
                 m = Pattern.compile(pattern).matcher(message);
@@ -61,6 +62,7 @@ class MessageHandler {
                 if (m.matches()) {
                     User u = mua.getUsersDb().getUser(m.group("player"));
                     u.setLastseen(DateTime.now().toString());
+                    u.setOnline(false);
                 }
                 pattern = "<(?<player>[\\w]*)> (?<chat>.*)";
                 m = Pattern.compile(pattern).matcher(message);
@@ -108,10 +110,8 @@ class MessageHandler {
                                 mua.getWriter().flush();
                                 return;
                             }
-                            if (mua.getUsersDb().getUserNames() != null && mua.getUsersDb().getUserNames().contains(params[1])) {
-                                mua.getWriter().write("tp " + params[1] + " ~ ~ ~\n");
-                                mua.getWriter().flush();
-                                mua.getWriter().write("tp " + m.group("player") + " " + mua.getUsersDb().getUser(params[1]).getCoordinate().toString() + "\n");
+                            if (mua.getUsersDb().getUserNames() != null && mua.getUsersDb().getUserNames().contains(params[1]) && mua.getUsersDb().getUser(params[1]).isOnline()) {
+                                mua.getWriter().write("tp " + m.group("player") + " " + params[1] + "\n");
                                 mua.getWriter().flush();
                                 return;
                             }

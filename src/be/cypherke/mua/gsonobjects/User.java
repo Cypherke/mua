@@ -7,6 +7,7 @@ public class User {
     private Coordinate coordinate;
     private String ip;
     private String entity;
+    private boolean online;
 
     public User(String username) {
         this.username = username;
@@ -38,5 +39,13 @@ public class User {
 
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public boolean isOnline() {
+        return online;
     }
 }
