@@ -55,6 +55,7 @@ class MessageHandler {
                     u.setEntity(m.group("entity"));
                     u.setCoordinate(new Coordinate(Double.valueOf(m.group("x")), Double.valueOf(m.group("y")), Double.valueOf(m.group("z"))));
                     u.setOnline(true);
+                    mua.getOutput().sendMotd(u.getUsername());
                 }
                 pattern = "(?<player>[\\w]*) left the game";
                 m = Pattern.compile(pattern).matcher(message);
