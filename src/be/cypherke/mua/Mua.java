@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class Mua {
 
     private UsersDb usersDb;
-    private BufferedWriter writer;
+    private Output output;
     private TeleportsDb teleportsDb;
 
     private Mua() throws IOException {
@@ -38,7 +38,9 @@ public class Mua {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(stdin));
         BufferedReader error = new BufferedReader(new InputStreamReader(stderr));
-        writer = new BufferedWriter(new OutputStreamWriter(stdout));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdout));
+
+        output = new Output(writer);
 
         Thread inputThread = new Thread(() -> {
             while (true) {
@@ -103,11 +105,11 @@ public class Mua {
         return this.usersDb;
     }
 
-    public BufferedWriter getWriter() {
-        return writer;
-    }
-
     public TeleportsDb getTeleportsDb() {
         return this.teleportsDb;
+    }
+
+    public Output getOutput() {
+        return output;
     }
 }

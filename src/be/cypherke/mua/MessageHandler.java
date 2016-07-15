@@ -69,60 +69,50 @@ class MessageHandler {
                 // match chat message
                 if (m.matches()) {
                     if (m.group("chat").equalsIgnoreCase("!help")) {
-                        mua.getWriter().write("tellraw @a {\"text\": \"[Server] \", \"color\": \"dark_red\", \"extra\": [{\"text\": \"Available commands: !sc !time !tp\", \"color\": \"dark_green\"}]}\n");
-                        mua.getWriter().flush();
+                        mua.getOutput().sendMessage("@a", "Available commands: !sc !time !tp");
                     }
                     if (m.group("chat").equalsIgnoreCase("!time")) {
-                        mua.getWriter().write("time query daytime\n");
-                        mua.getWriter().flush();
+                        mua.getOutput().sendCommand("time query daytime");
                         timeTriggered = true;
                     }
                     if (m.group("chat").equalsIgnoreCase("!sc")) {
-                        mua.getWriter().write("tp " + m.group("player") + " ~ ~ ~\n");
-                        mua.getWriter().flush();
+                        mua.getOutput().sendGetCoordinates(m.group("player"));
                         coordTriggered = true;
                     }
                     if (m.group("chat").startsWith("!tp")) {
                         String[] params = m.group("chat").split(" ");
                         if (params.length == 1) {
-                            mua.getWriter().write("tellraw @a {\"text\": \"[Server] \", \"color\": \"dark_red\", \"extra\": [{\"text\": \"Usage !tp add/username/teleportname/list\", \"color\": \"dark_green\"}]}\n");
-                            mua.getWriter().flush();
+                            mua.getOutput().sendMessage("@a", "Usage !tp add/username/teleportname/list");
+                            return;
                         }
                         if (params.length == 2) {
                             if (params[1].equalsIgnoreCase("add")) {
-                                mua.getWriter().write("tellraw @a {\"text\": \"[Server] \", \"color\": \"dark_red\", \"extra\": [{\"text\": \"Usage !tp register name_for_tele\", \"color\": \"dark_green\"}]}\n");
-                                mua.getWriter().flush();
+                                mua.getOutput().sendMessage("@a","Usage !tp register name_for_tele");
                                 return;
                             }
                             if (params[1].equalsIgnoreCase("list")) {
                                 String tps = mua.getTeleportsDb().getUserTps(m.group("player"));
                                 if (tps != null) {
-                                    mua.getWriter().write("tellraw @a {\"text\": \"[Server] \", \"color\": \"dark_red\", \"extra\": [{\"text\": \"Your teleports are: " + tps + "\", \"color\": \"dark_green\"}]}\n");
-                                    mua.getWriter().flush();
+                                    mua.getOutput().sendMessage("@a", "Your teleports are: " + tps);
                                 } else {
-                                    mua.getWriter().write("tellraw @a {\"text\": \"[Server] \", \"color\": \"dark_red\", \"extra\": [{\"text\": \"You dont have any teleports yet, use !tp add to set\", \"color\": \"dark_green\"}]}\n");
-                                    mua.getWriter().flush();
+                                    mua.getOutput().sendMessage("@a", "You don't have any teleports yet, use !tp add to set");
                                 }
                                 return;
                             }
                             if (mua.getTeleportsDb().getUserTps(m.group("player")) != null && mua.getTeleportsDb().getUserTps(m.group("player")).contains(params[1])) {
-                                mua.getWriter().write("tp " + m.group("player") + " " + mua.getTeleportsDb().getTp(params[1]).getCoordinate().toString() + "\n");
-                                mua.getWriter().flush();
+                                mua.getOutput().sendTeleport(m.group("player"),mua.getTeleportsDb().getTp(params[1]).getCoordinate());
                                 return;
                             }
                             if (mua.getUsersDb().getUserNames() != null && mua.getUsersDb().getUserNames().contains(params[1]) && mua.getUsersDb().getUser(params[1]).isOnline()) {
-                                mua.getWriter().write("tp " + m.group("player") + " " + params[1] + "\n");
-                                mua.getWriter().flush();
+                                mua.getOutput().sendTeleport(m.group("player"), params[1]);
                                 return;
                             }
-                            mua.getWriter().write("tellraw @a {\"text\": \"[Server] \", \"color\": \"dark_red\", \"extra\": [{\"text\": \"Usage !tp add/username/teleportname/list\", \"color\": \"dark_green\"}]}\n");
-                            mua.getWriter().flush();
+                            mua.getOutput().sendMessage("@a", "Usage !tp add/username/teleportname/list");
                             return;
                         }
                         if (params.length == 3) {
                             if (params[1].equalsIgnoreCase("register")) {
-                                mua.getWriter().write("tp " + m.group("player") + " ~ ~ ~\n");
-                                mua.getWriter().flush();
+                                mua.getOutput().sendGetCoordinates(m.group("player"));
                                 mua.getTeleportsDb().add(new Teleport(params[2], m.group("player"), DateTime.now().toString(), mua.getUsersDb().getUser(m.group("player")).getCoordinate()));
                             }
                         }
@@ -139,8 +129,7 @@ class MessageHandler {
                     DateTime dateTime = new DateTime(2016, 1, 1, 6, 0, 0);
                     dateTime = dateTime.plusSeconds(Math.toIntExact((long) (time * 3.6)));
                     DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm:ss");
-                    mua.getWriter().write("tellraw @a {\"text\": \"[Server] \", \"color\": \"dark_red\", \"extra\": [{\"text\": \"Time is " + dateTime.toString(fmt) + " \", \"color\": \"dark_green\"}]}\n");
-                    mua.getWriter().flush();
+                    mua.getOutput().sendMessage("@a", "Time is " + dateTime.toString(fmt));
                     timeTriggered = false;
                 }
                 //match teleport message
@@ -150,8 +139,7 @@ class MessageHandler {
                     User u = mua.getUsersDb().getUser(m.group("player"));
                     u.setCoordinate(new Coordinate(Double.valueOf(m.group("x")), Double.valueOf(m.group("y")), Double.valueOf(m.group("z"))));
                     if (coordTriggered) {
-                        mua.getWriter().write("tellraw @a {\"text\": \"[Server] \", \"color\": \"dark_red\", \"extra\": [{\"text\": \"coordinates of " + u.getUsername() + ": " + u.getCoordinate().toString() + " \", \"color\": \"dark_green\"}]}\n");
-                        mua.getWriter().flush();
+                        mua.getOutput().sendMessage("@a", "coordinates of " + u.getUsername() + ": " + u.getCoordinate().toString());
                         coordTriggered = false;
                     }
                 }
