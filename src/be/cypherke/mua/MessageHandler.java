@@ -88,15 +88,15 @@ class MessageHandler {
                         }
                         if (params.length == 2) {
                             if (params[1].equalsIgnoreCase("add")) {
-                                mua.getOutput().sendMessage("@a","Usage !tp register name_for_tele");
+                                mua.getOutput().sendMessage("@a","Usage !tp add name_for_tele");
                                 return;
                             }
                             if (params[1].equalsIgnoreCase("list")) {
                                 String tps = mua.getTeleportsDb().getUserTps(m.group("player"));
                                 if (tps != null) {
-                                    mua.getOutput().sendMessage("@a", "Your teleports are: " + tps);
+                                    mua.getOutput().sendMessage(m.group("player"), "Your teleports are: " + tps);
                                 } else {
-                                    mua.getOutput().sendMessage("@a", "You don't have any teleports yet, use !tp add to set");
+                                    mua.getOutput().sendMessage(m.group("player"), "You don't have any teleports yet, use !tp add to set");
                                 }
                                 return;
                             }
@@ -108,11 +108,11 @@ class MessageHandler {
                                 mua.getOutput().sendTeleport(m.group("player"), params[1]);
                                 return;
                             }
-                            mua.getOutput().sendMessage("@a", "Usage !tp add/username/teleportname/list");
+                            mua.getOutput().sendMessage(m.group("player"), "Usage !tp add/username/teleportname/list");
                             return;
                         }
                         if (params.length == 3) {
-                            if (params[1].equalsIgnoreCase("register")) {
+                            if (params[1].equalsIgnoreCase("add")) {
                                 mua.getOutput().sendGetCoordinates(m.group("player"));
                                 mua.getTeleportsDb().add(new Teleport(params[2], m.group("player"), DateTime.now().toString(), mua.getUsersDb().getUser(m.group("player")).getCoordinate()));
                             }
