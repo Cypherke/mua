@@ -93,12 +93,16 @@ class MessageHandler {
                     if (m.group("chat").startsWith("!tp")) {
                         String[] params = m.group("chat").split(" ");
                         if (params.length == 1) {
-                            mua.getOutput().sendMessage("@a", "Usage !tp add/username/teleportname/list");
+                            mua.getOutput().sendMessage("@a", "Usage !tp add/delete/username/teleportname/list");
                             return;
                         }
                         if (params.length == 2) {
                             if (params[1].equalsIgnoreCase("add")) {
                                 mua.getOutput().sendMessage("@a","Usage !tp add name_for_tele");
+                                return;
+                            }
+                            if (params[1].equalsIgnoreCase("delete")) {
+                                mua.getOutput().sendMessage("@a","Usage !tp delete name_for_tele");
                                 return;
                             }
                             if (params[1].equalsIgnoreCase("list")) {
@@ -125,6 +129,15 @@ class MessageHandler {
                             if (params[1].equalsIgnoreCase("add")) {
                                 mua.getOutput().sendGetCoordinates(m.group("player"));
                                 mua.getTeleportsDb().add(new Teleport(params[2], m.group("player"), DateTime.now().toString(), mua.getUsersDb().getUser(m.group("player")).getCoordinate()));
+                            }
+                            if (params[1].equalsIgnoreCase("delete")) {
+                                if (mua.getTeleportsDb().getUserTps(m.group("player")).contains(params[2])) {
+                                    mua.getTeleportsDb().removeTeleport(params[2]);
+                                    mua.getOutput().sendMessage(m.group("player"),"The teleport has been removed.");
+                                }
+                                else {
+                                    mua.getOutput().sendMessage(m.group("player"), "This teleport doesn't exist, use !tp list to check");
+                                }
                             }
                         }
                     }

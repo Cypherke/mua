@@ -102,4 +102,12 @@ public class TeleportsDb {
         }
         return null;
     }
+
+    public void removeTeleport(String teleportName) {
+        for (Teleport tp : teleports) {
+            if (tp.getName().equalsIgnoreCase(teleportName)) {
+                this.teleports.remove(tp);
+            }
+        }
+    }
 }
