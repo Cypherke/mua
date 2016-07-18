@@ -8,6 +8,7 @@ public class User {
     private String ip;
     private String entity;
     private boolean online;
+    private int numberOfDeaths;
 
     public User(String username) {
         this.username = username;
@@ -47,5 +48,13 @@ public class User {
 
     public boolean isOnline() {
         return online;
+    }
+
+    public void addDeath() {
+        this.numberOfDeaths++;
+    }
+
+    public int getNumberOfDeaths() {
+        return numberOfDeaths;
     }
 }

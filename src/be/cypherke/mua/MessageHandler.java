@@ -65,6 +65,16 @@ class MessageHandler {
                     u.setLastseen(DateTime.now().toString());
                     u.setOnline(false);
                 }
+                //count number of deaths
+                String [] deathMessages = {"was slain by Zombie", "was blown up by Creeper","was slain by Enderman","tried to swim in lava", "hit the ground too hard", "was shot by Skeleton"};
+                for ( String deathMessage : deathMessages) {
+                    if (message.contains(deathMessage)) {
+                        String user = message.split(" ")[0];
+                        mua.getUsersDb().getUser(user).addDeath();
+                        mua.getOutput().sendMessage("@a", "Congrats " + message.split(" ")[0] + ", this brings your total death count to: " + mua.getUsersDb().getUser(user).getNumberOfDeaths());
+                    }
+                }
+                if (message.contains(""))
                 pattern = "<(?<player>[\\w]*)> (?<chat>.*)";
                 m = Pattern.compile(pattern).matcher(message);
                 // match chat message

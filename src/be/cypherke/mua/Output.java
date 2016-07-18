@@ -41,6 +41,6 @@ class Output {
     void sendMotd(String username) throws IOException {
         sendMessage(username, "Hey " + username + ", welcome to the server!");
         sendMessage(username, "Some Guidelines: ");
-        sendMessage(username, "Caving: always place signs at the enry of a dead end, only place torches on the left wall when entering, so you can follow the torches to the exit on your right");
+        sendMessage(username, "Caving: always place signs at the entry of a dead end, only place torches on the left wall when entering, so you can follow the torches to the exit on your right");
     }
 }
