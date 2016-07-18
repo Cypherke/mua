@@ -115,7 +115,7 @@ class MessageHandler {
                                 return;
                             }
                             if (mua.getTeleportsDb().getUserTps(m.group("player")) != null && mua.getTeleportsDb().getUserTps(m.group("player")).contains(params[1])) {
-                                mua.getOutput().sendTeleport(m.group("player"),mua.getTeleportsDb().getTp(params[1]).getCoordinate());
+                                mua.getOutput().sendTeleport(m.group("player"),mua.getTeleportsDb().getTp(m.group("player"),params[1]).getCoordinate());
                                 return;
                             }
                             if (mua.getUsersDb().getUserNames() != null && mua.getUsersDb().getUserNames().contains(params[1]) && mua.getUsersDb().getUser(params[1]).isOnline()) {
@@ -133,7 +133,7 @@ class MessageHandler {
                             }
                             if (params[1].equalsIgnoreCase("delete")) {
                                 if (mua.getTeleportsDb().getUserTps(m.group("player")).contains(params[2])) {
-                                    mua.getTeleportsDb().removeTeleport(params[2]);
+                                    mua.getTeleportsDb().removeTeleport(m.group("player"), params[2]);
                                     mua.getOutput().sendMessage(m.group("player"),"The teleport has been removed.");
                                 }
                                 else {

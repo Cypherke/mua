@@ -95,19 +95,19 @@ public class TeleportsDb {
         return null;
     }
 
-    public Teleport getTp(String name) {
+    public Teleport getTp(String player, String name) {
         for (Teleport tp : teleports) {
-            if (tp.getName().equalsIgnoreCase(name)) {
+            if (tp.getName().equalsIgnoreCase(name) && tp.getOwner().equalsIgnoreCase(player)) {
                 return tp;
             }
         }
         return null;
     }
 
-    public void removeTeleport(String teleportName) {
+    public void removeTeleport(String player, String teleportName) {
         for (Iterator<Teleport> iterator = teleports.iterator(); iterator.hasNext(); ) {
             Teleport tp = iterator.next();
-            if (tp.getName().equalsIgnoreCase(teleportName)) {
+            if (tp.getName().equalsIgnoreCase(teleportName) && tp.getOwner().equalsIgnoreCase(player)) {
                 iterator.remove();
             }
         }
