@@ -14,4 +14,16 @@ public class Coordinate {
     public String toString() {
         return x.intValue() + " " + y.intValue() + " " + z.intValue();
     }
+
+    public Double getX() {
+        return x;
+    }
+
+    public Double getY() {
+        return y;
+    }
+
+    public Double getZ() {
+        return z;
+    }
 }

@@ -19,7 +19,7 @@ class Output {
     }
 
     void sendTeleport(String who, Coordinate coordinate) throws IOException {
-        writer.write("tp " + who + " " + coordinate.toString() + "\n");
+        writer.write("tp " + who + " " + coordinate.getX() + " " + coordinate.getY() + " " + coordinate.getZ() + "\n");
         writer.flush();
     }
 

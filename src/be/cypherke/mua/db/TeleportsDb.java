@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class TeleportsDb {
@@ -104,9 +105,10 @@ public class TeleportsDb {
     }
 
     public void removeTeleport(String teleportName) {
-        for (Teleport tp : teleports) {
+        for (Iterator<Teleport> iterator = teleports.iterator(); iterator.hasNext(); ) {
+            Teleport tp = iterator.next();
             if (tp.getName().equalsIgnoreCase(teleportName)) {
-                this.teleports.remove(tp);
+                iterator.remove();
             }
         }
     }

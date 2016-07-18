@@ -129,6 +129,7 @@ class MessageHandler {
                             if (params[1].equalsIgnoreCase("add")) {
                                 mua.getOutput().sendGetCoordinates(m.group("player"));
                                 mua.getTeleportsDb().add(new Teleport(params[2], m.group("player"), DateTime.now().toString(), mua.getUsersDb().getUser(m.group("player")).getCoordinate()));
+                                mua.getOutput().sendMessage(m.group("player"), "The teleport has been added.");
                             }
                             if (params[1].equalsIgnoreCase("delete")) {
                                 if (mua.getTeleportsDb().getUserTps(m.group("player")).contains(params[2])) {
