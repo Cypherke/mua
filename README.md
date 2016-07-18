@@ -27,8 +27,10 @@ apt-get install oracle-java8-installer
 ##### Create a jar from source
 - make a run configuration in the maven projects windows with the following command line parameters: clean package shade:shade
 - Build the program with this new config, copy mua.jar and mua.xml to your directory of choice, edit mua.xml and run program with 
+
 ```
 java -jar mua.jar
 ```
+
 ## Contributing
 see [Contributing](CONTRIBUTING.md)
