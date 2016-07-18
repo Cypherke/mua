@@ -18,11 +18,13 @@ public class Mua {
     private UsersDb usersDb;
     private Output output;
     private TeleportsDb teleportsDb;
+    private Scheduler scheduler;
 
     private Mua() throws IOException {
         Config config = new Config("mua", "xml");
         usersDb = new UsersDb(config.getString("mua_usersfile"));
         teleportsDb = new TeleportsDb(config.getString("mua_teleportsfile"));
+        scheduler = new Scheduler(this);
         MessageHandler messageHandler = new MessageHandler(this);
 
         ProcessBuilder builder = new ProcessBuilder("java", "-Xmx2048M", "-Xms2048M", "-d64", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC", "-XX:+CMSIncrementalPacing", "-XX:ParallelGCThreads=2", "-XX:+AggressiveOpts", "-jar", config.getString("server_jar"), "nogui");

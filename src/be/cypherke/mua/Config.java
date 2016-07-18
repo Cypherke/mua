@@ -8,11 +8,11 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-public class Config {
+class Config {
     private Properties prop;
     private String filename;
 
-    public Config(String basename, String extension) {
+    Config(String basename, String extension) {
         prop = new Properties();
         filename = basename + "." + extension;
 
@@ -39,8 +39,6 @@ public class Config {
                     System.exit(1);
                 }
             }
-
-            System.out.println("Config loaded: " + prop.size() + " keys.");
         } catch (FileNotFoundException e) {
             System.err.println("Could not load config file: " + e.toString());
         } catch (IOException e) {
@@ -56,15 +54,7 @@ public class Config {
         }
     }
 
-    public String getString(String key) {
+    String getString(String key) {
         return prop.getProperty(key);
-    }
-
-    public boolean getBoolean(String key) {
-        return prop.getProperty(key).equals("true");
-    }
-
-    public String[] getStringArray(String key) {
-        return prop.getProperty(key).split(",");
     }
 }
