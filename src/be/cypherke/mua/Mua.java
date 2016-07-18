@@ -101,15 +101,15 @@ public class Mua {
         }
     }
 
-    public UsersDb getUsersDb() {
+    UsersDb getUsersDb() {
         return this.usersDb;
     }
 
-    public TeleportsDb getTeleportsDb() {
+    TeleportsDb getTeleportsDb() {
         return this.teleportsDb;
     }
 
-    public Output getOutput() {
+    Output getOutput() {
         return output;
     }
 }

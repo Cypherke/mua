@@ -20,4 +20,8 @@ public class Teleport {
     public Coordinate getCoordinate() {
         return coordinate;
     }
+
+    public String getOwner() {
+        return owner;
+    }
 }

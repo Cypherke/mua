@@ -52,6 +52,7 @@ public class TeleportsDb {
             }
         }
     }
+
     public void save() {
         if (teleports != null) {
             FileWriter file = null;
@@ -84,7 +85,9 @@ public class TeleportsDb {
         if (teleports != null && teleports.size() > 0) {
             StringBuilder tps = new StringBuilder();
             for (Teleport tp : teleports) {
-                tps.append(tp.getName() + " ");
+                if (tp.getOwner().equalsIgnoreCase(player)) {
+                    tps.append(tp.getName()).append(" ");
+                }
             }
             return tps.toString();
         }

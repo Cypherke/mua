@@ -7,6 +7,7 @@
     <groupId>be.cypherke.mua</groupId>
     <artifactId>mua</artifactId>
     <version>HEAD-SNAPSHOT</version>
+    <name>mua</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,17 +44,54 @@
     </dependencies>
 
     <build>
+        <finalName>mua</finalName>
         <sourceDirectory>src</sourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.0</version>
+                    <version>3.5.1</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <mainClass>be.cypherke.mua.Mua</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>2.4.3</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <transformers>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                                        <resource>MANIFEST.MF</resource>
+                                    </transformer>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                        <resource>META-INF/MANIFEST.MF</resource>
+                                        <file>src/META-INF/MANIFEST.MF</file>
+                                    </transformer>
+                                </transformers>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
