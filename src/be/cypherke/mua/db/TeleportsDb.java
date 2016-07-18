@@ -1,30 +1,25 @@
 package be.cypherke.mua.db;
 
 import be.cypherke.mua.gsonobjects.Teleport;
+import be.cypherke.mua.io.FileManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 public class TeleportsDb {
+    private final FileManager fileManager;
     private List<Teleport> teleports;
-    private String savefile;
 
-    public TeleportsDb(String savefile) {
+    public TeleportsDb(FileManager fileManager) {
+        this.fileManager = fileManager;
         this.teleports = new ArrayList<>();
-        this.savefile = savefile;
+
         loadTeleports();
     }
 
@@ -32,48 +27,24 @@ public class TeleportsDb {
         if (teleports != null) {
             teleports.clear();
         }
-        Path path = FileSystems.getDefault().getPath(savefile);
-        File file = path.toFile();
-        if (file.isFile() && file.canRead()) {
-            String json = null;
-            try {
-                json = new String(Files.readAllBytes(path));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+        Type listType = new TypeToken<List<Teleport>>() {
+        }.getType();
+        String json = fileManager.load(listType);
+
+        if (json != null) {
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Teleport>>() {
-            }.getType();
             teleports = gson.fromJson(json, listType);
-        } else {
-            try {
-                FileUtils.touch(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public void save() {
         if (teleports != null) {
-            FileWriter file = null;
-            try {
-                file = new FileWriter(savefile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             Collections.sort(teleports, (t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
             String json = gson.toJson(teleports);
-            if (file != null) {
-                try {
-                    file.write(json);
-                    file.flush();
-                    file.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+
+            fileManager.save(json);
         }
     }
 

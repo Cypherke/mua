@@ -1,29 +1,24 @@
 package be.cypherke.mua.db;
 
 import be.cypherke.mua.gsonobjects.User;
+import be.cypherke.mua.io.FileManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class UsersDb {
+    private final FileManager fileManager;
     private List<User> users;
-    private String savefile;
 
-    public UsersDb(String savefile) {
+    public UsersDb(FileManager fileManager) {
+        this.fileManager = fileManager;
         this.users = new ArrayList<>();
-        this.savefile = savefile;
+
         loadUsers();
     }
 
@@ -31,25 +26,14 @@ public class UsersDb {
         if (users != null) {
             users.clear();
         }
-        Path path = FileSystems.getDefault().getPath(savefile);
-        File file = path.toFile();
-        if (file.isFile() && file.canRead()) {
-            String json = null;
-            try {
-                json = new String(Files.readAllBytes(path));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+        Type listType = new TypeToken<List<User>>() {
+        }.getType();
+        String json = fileManager.load(listType);
+
+        if (json != null) {
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<User>>() {
-            }.getType();
             users = gson.fromJson(json, listType);
-        } else {
-            try {
-                FileUtils.touch(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -69,24 +53,11 @@ public class UsersDb {
 
     public void save() {
         if (users != null) {
-            FileWriter file = null;
-            try {
-                file = new FileWriter(savefile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             Collections.sort(users, (u1, u2) -> u1.getUsername().compareToIgnoreCase(u2.getUsername()));
             String json = gson.toJson(users);
-            if (file != null) {
-                try {
-                    file.write(json);
-                    file.flush();
-                    file.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+
+            fileManager.save(json);
         }
     }
 

@@ -2,6 +2,7 @@ package be.cypherke.mua;
 
 import be.cypherke.mua.db.TeleportsDb;
 import be.cypherke.mua.db.UsersDb;
+import be.cypherke.mua.io.LocalFileManager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,8 +23,8 @@ public class Mua {
 
     private Mua() throws IOException {
         Config config = new Config("mua", "xml");
-        usersDb = new UsersDb(config.getString("mua_usersfile"));
-        teleportsDb = new TeleportsDb(config.getString("mua_teleportsfile"));
+        usersDb = new UsersDb(new LocalFileManager(config.getString("mua_usersfile")));
+        teleportsDb = new TeleportsDb(new LocalFileManager(config.getString("mua_teleportsfile")));
         scheduler = new Scheduler(this);
         MessageHandler messageHandler = new MessageHandler(this);
 
