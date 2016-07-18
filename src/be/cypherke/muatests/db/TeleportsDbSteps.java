@@ -34,7 +34,8 @@ public class TeleportsDbSteps {
 
     @Then("^the new teleport location '(.+)' is added to the database$")
     public void theNewTeleportLocationIsAddedToTheDatabase(String locationName) throws Throwable {
-        Teleport teleport = teleportsDb.getTp(locationName);
+        String playerName = "user";
+        Teleport teleport = teleportsDb.getTp(playerName, locationName);
 
         Assert.assertNotNull(teleport);
     }
@@ -52,9 +53,9 @@ public class TeleportsDbSteps {
         teleportsDb.add(teleport);
     }
 
-    @When("^I remove the teleport location '(.+)'$")
-    public void iRemoveTheTeleportLocationTest(String locationName) throws Throwable {
-        teleportsDb.removeTeleport(locationName);
+    @When("^I remove the teleport location '(.+)' for the player '(.+)'$")
+    public void iRemoveTheTeleportLocationTest(String locationName, String playerName) throws Throwable {
+        teleportsDb.removeTeleport(playerName, locationName);
     }
 
     @Then("^the player '(.+)' has no more teleport locations$")
