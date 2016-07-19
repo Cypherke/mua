@@ -1,4 +1,4 @@
-package be.cypherke.muatests.mocks;
+package be.cypherke.mua.mocks;
 
 import be.cypherke.mua.io.FileManager;
 

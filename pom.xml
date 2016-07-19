@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>info.cukes</groupId>
-            <artifactId>cucumber-java</artifactId>
+            <artifactId>cucumber-java8</artifactId>
             <version>1.2.4</version>
             <scope>test</scope>
         </dependency>

@@ -1,10 +1,9 @@
-package be.cypherke.muatests.db;
+package be.cypherke.mua.db;
 
-import be.cypherke.mua.db.TeleportsDb;
 import be.cypherke.mua.gsonobjects.Coordinate;
 import be.cypherke.mua.gsonobjects.Teleport;
 import be.cypherke.mua.io.FileManager;
-import be.cypherke.muatests.mocks.EmptyFileManager;
+import be.cypherke.mua.mocks.EmptyFileManager;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
