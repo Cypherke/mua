@@ -3,19 +3,21 @@ package be.cypherke.mua.db;
 import be.cypherke.mua.gsonobjects.Coordinate;
 import be.cypherke.mua.gsonobjects.Teleport;
 import be.cypherke.mua.io.FileManager;
-import be.cypherke.mua.mocks.EmptyFileManager;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.joda.time.DateTime;
 import org.junit.Assert;
+import org.mockito.Mockito;
 
 public class TeleportsDbSteps {
     private TeleportsDb teleportsDb;
 
     @Given("^an empty teleport database$")
     public void anEmptyTeleportDatabase() throws Throwable {
-        FileManager fileManager = new EmptyFileManager();
+        FileManager fileManager = Mockito.mock(FileManager.class);
+        Mockito.when(fileManager.load(Mockito.any())).thenReturn(null);
+
         teleportsDb = new TeleportsDb(fileManager);
     }
 
@@ -40,7 +42,9 @@ public class TeleportsDbSteps {
 
     @Given("^the player '(.+)' has only one teleport location named '(.+)'$")
     public void thePlayerUserHasOnlyOneTeleportLocationNamedTest(String playerName, String locationName) throws Throwable {
-        FileManager fileManager = new EmptyFileManager();
+        FileManager fileManager = Mockito.mock(FileManager.class);
+        Mockito.when(fileManager.load(Mockito.any())).thenReturn(null);
+
         teleportsDb = new TeleportsDb(fileManager);
 
         String created = DateTime.now().toString();
