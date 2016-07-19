@@ -1,5 +1,6 @@
-package be.cypherke.mua.db;
+package be.cypherke.mua.steps;
 
+import be.cypherke.mua.db.TeleportsDb;
 import be.cypherke.mua.gsonobjects.Coordinate;
 import be.cypherke.mua.gsonobjects.Teleport;
 import be.cypherke.mua.io.FileManager;
