@@ -1,4 +1,4 @@
-package be.cypherke.mua.steps;
+package be.cypherke.mua.unit.steps;
 
 import be.cypherke.mua.db.TeleportsDb;
 import be.cypherke.mua.gsonobjects.Coordinate;

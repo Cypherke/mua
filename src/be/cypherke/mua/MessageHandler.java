@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class MessageHandler {
+public class MessageHandler {
 
     private List<MessageBase> messages = new ArrayList<>();
 
-    MessageHandler(Mua mua) {
+    public MessageHandler(Mua mua) {
         messages.add(new InfoMessage(mua));
         messages.add(new LogonMessage(mua));
         messages.add(new LogoffMessage(mua));
