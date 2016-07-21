@@ -7,12 +7,15 @@ import be.cypherke.mua.gsonobjects.User;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TeleportMessage extends ChatMessageBase {
 
     private boolean coordTriggered;
+    private Map<String, AddRequest> teleportAddTriggered = new HashMap<>();
 
     public TeleportMessage(Mua mua) {
         super(mua);
@@ -64,9 +67,12 @@ public class TeleportMessage extends ChatMessageBase {
             }
             if (params.length == 3) {
                 if (params[1].equalsIgnoreCase("add")) {
+                    String locationName = params[2];
+                    AddRequest request = new AddRequest(true, locationName);
+
+                    teleportAddTriggered.put(player, request);
+
                     getMua().getOutput().sendGetCoordinates(player);
-                    getMua().getTeleportsDb().add(new Teleport(params[2], player, DateTime.now().toString(), getMua().getUsersDb().getUser(player).getCoordinate()));
-                    getMua().getOutput().sendMessage(player, "The teleport has been added.");
 
                     return true;
                 }
@@ -91,16 +97,51 @@ public class TeleportMessage extends ChatMessageBase {
         String pattern = "Teleported (?<player>[\\w]*) to (?<x>\\-?[0-9\\.]*), (?<y>\\-?[0-9\\.]*), (?<z>\\-?[0-9\\.]*)";
         Matcher m = Pattern.compile(pattern).matcher(message);
         if (m.matches()) {
-            User u = getMua().getUsersDb().getUser(m.group("player"));
+            String player = m.group("player");
+            User u = getMua().getUsersDb().getUser(player);
+
             u.setCoordinate(new Coordinate(Double.valueOf(m.group("x")), Double.valueOf(m.group("y")), Double.valueOf(m.group("z"))));
+
             if (coordTriggered) {
                 getMua().getOutput().sendMessage("@a", "coordinates of " + u.getUsername() + ": " + u.getCoordinate().toString());
                 coordTriggered = false;
+            }
+
+            if (teleportAddTriggered.containsKey(player)) {
+                AddRequest request = teleportAddTriggered.get(player);
+                if (request.getRequestedAdd()) {
+                    String locationName = request.getLocationName();
+                    if (locationName != null) {
+                        getMua().getTeleportsDb().add(new Teleport(locationName, player, DateTime.now().toString(), getMua().getUsersDb().getUser(player).getCoordinate()));
+                        getMua().getOutput().sendMessage(player, "The teleport has been added.");
+
+                        AddRequest emptyRequest = new AddRequest(false, null);
+                        teleportAddTriggered.put(player, emptyRequest);
+                    }
+                }
             }
 
             return true;
         }
 
         return false;
+    }
+
+    private class AddRequest {
+        private boolean requestedAdd;
+        private String locationName;
+
+        AddRequest(boolean requestedAdd, String locationName) {
+            this.requestedAdd = requestedAdd;
+            this.locationName = locationName;
+        }
+
+        boolean getRequestedAdd() {
+            return requestedAdd;
+        }
+
+        String getLocationName() {
+            return locationName;
+        }
     }
 }
