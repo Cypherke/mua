@@ -4,13 +4,14 @@ import be.cypherke.mua.Mua;
 import be.cypherke.mua.gsonobjects.Coordinate;
 import be.cypherke.mua.gsonobjects.Teleport;
 import be.cypherke.mua.gsonobjects.User;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.joda.time.DateTime;
 
 public class TeleportMessage extends ChatMessageBase {
 
@@ -57,7 +58,8 @@ public class TeleportMessage extends ChatMessageBase {
                     getMua().getOutput().sendTeleport(player, getMua().getTeleportsDb().getTp(player, params[1]).getCoordinate());
                     return true;
                 }
-                if (getMua().getUsersDb().getUserNames() != null && getMua().getUsersDb().getUserNames().contains(params[1]) && getMua().getUsersDb().getUser(params[1]).isOnline()) {
+                if (getMua().getUsersDb().getUserNames() != null && getMua().getUsersDb().getUserNames().contains(params[1])
+                        && getMua().getUsersDb().getUser(params[1]).isOnline()) {
                     getMua().getOutput().sendTeleport(player, params[1]);
                     return true;
                 }
@@ -112,7 +114,8 @@ public class TeleportMessage extends ChatMessageBase {
                 if (request.getRequestedAdd()) {
                     String locationName = request.getLocationName();
                     if (locationName != null) {
-                        getMua().getTeleportsDb().add(new Teleport(locationName, player, DateTime.now().toString(), getMua().getUsersDb().getUser(player).getCoordinate()));
+                        getMua().getTeleportsDb().add(new Teleport(locationName, player, DateTime.now().toString(),
+                                getMua().getUsersDb().getUser(player).getCoordinate()));
                         getMua().getOutput().sendMessage(player, "The teleport has been added.");
 
                         AddRequest emptyRequest = new AddRequest(false, null);

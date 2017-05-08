@@ -1,6 +1,11 @@
 package be.cypherke.mua;
 
-import be.cypherke.mua.messages.*;
+import be.cypherke.mua.messages.ChatMessage;
+import be.cypherke.mua.messages.DeathMessage;
+import be.cypherke.mua.messages.InfoMessage;
+import be.cypherke.mua.messages.LogoffMessage;
+import be.cypherke.mua.messages.LogonMessage;
+import be.cypherke.mua.messages.MessageBase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +17,11 @@ public class MessageHandler {
 
     private List<MessageBase> messages = new ArrayList<>();
 
+    /**
+     * Constructor.
+     *
+     * @param mua {@link Mua}
+     */
     public MessageHandler(Mua mua) {
         messages.add(new InfoMessage(mua));
         messages.add(new LogonMessage(mua));
@@ -20,6 +30,12 @@ public class MessageHandler {
         messages.add(new ChatMessage(mua));
     }
 
+    /**
+     * Handles every line from the server.
+     *
+     * @param line the line to handle
+     * @throws IOException exception by BufferedReader
+     */
     public void dispatch(String line) throws IOException {
         String pattern = "\\[(?<timestamp>[0-9\\:]*)\\]\\s\\[(?<function>[\\w\\s/\\#]*)\\]:\\s(?<message>.*)";
         Matcher m = Pattern.compile(pattern).matcher(line);

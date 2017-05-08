@@ -1,13 +1,13 @@
 package be.cypherke.mua;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 class Scheduler {
     private ScheduledThreadPoolExecutor scheduler;
@@ -29,8 +29,8 @@ class Scheduler {
         long timeuntil = (interval.toDurationMillis() / 1000) + 1;
         scheduler.scheduleWithFixedDelay(triggerEveryMinute, timeuntil, 60, TimeUnit.SECONDS);
         Runnable triggerEveryHour = () -> {
-                mua.getUsersDb().save();
-                mua.getTeleportsDb().save();
+            mua.getUsersDb().save();
+            mua.getTeleportsDb().save();
         };
         scheduler.scheduleAtFixedRate(triggerEveryHour, 10, 60, TimeUnit.MINUTES);
     }

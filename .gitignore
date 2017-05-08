@@ -2,4 +2,7 @@
 mcserver
 .idea
 target
-dependency-reduced-pom.xml
+.gradle
+out
+lib
+build

@@ -28,7 +28,9 @@ public class Mua {
         scheduler = new Scheduler(this);
         MessageHandler messageHandler = new MessageHandler(this);
 
-        ProcessBuilder builder = new ProcessBuilder("java", "-Xmx2048M", "-Xms2048M", "-d64", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC", "-XX:+CMSIncrementalPacing", "-XX:ParallelGCThreads=2", "-XX:+AggressiveOpts", "-jar", config.getString("server_jar"), "nogui");
+        ProcessBuilder builder = new ProcessBuilder("java", "-Xmx2048M", "-Xms2048M", "-d64", "-XX:+UseConcMarkSweepGC",
+            "-XX:+UseParNewGC", "-XX:+CMSIncrementalPacing", "-XX:ParallelGCThreads=2", "-XX:+AggressiveOpts", "-jar",
+            config.getString("server_jar"), "nogui");
         builder.directory(new File(config.getString("server_workdir")));
 
         Process process = builder.start();
@@ -96,6 +98,11 @@ public class Mua {
 
     }
 
+    /**
+     * Main entry point to program.
+     *
+     * @param args the arguments for the program
+     */
     public static void main(final String[] args) {
         try {
             new Mua();

@@ -16,7 +16,8 @@ public class LogonMessage extends MessageBase {
 
     @Override
     public boolean handle(String function, String message) throws IOException {
-        String pattern = "(?<player>[\\w]*)\\[/(?<ip>[0-9\\.]*):[0-9]*\\] logged in with entity id (?<entity>[0-9]*) at \\((?<x>\\-?[0-9\\.]*), (?<y>\\-?[0-9\\.]*), (?<z>\\-?[0-9\\.]*)\\)";
+        String pattern = "(?<player>[\\w]*)\\[/(?<ip>[0-9\\.]*):[0-9]*\\] logged in with entity id (?<entity>[0-9]*) "
+                + "at \\((?<x>\\-?[0-9\\.]*), (?<y>\\-?[0-9\\.]*), (?<z>\\-?[0-9\\.]*)\\)";
         Matcher m = Pattern.compile(pattern).matcher(message);
 
         if (m.matches()) {

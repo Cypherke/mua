@@ -16,6 +16,10 @@ public class ChatMessage extends MessageBase {
 
     private final List<ChatMessageBase> messages = new ArrayList<>();
 
+    /**
+     * Constructor.
+     * @param mua {@link Mua}
+     */
     public ChatMessage(Mua mua) {
         super(mua);
 

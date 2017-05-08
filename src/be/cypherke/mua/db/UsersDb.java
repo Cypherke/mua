@@ -15,6 +15,11 @@ public class UsersDb {
     private final FileManager fileManager;
     private List<User> users;
 
+    /**
+     * Constructor.
+     *
+     * @param fileManager the {@link FileManager}
+     */
     public UsersDb(FileManager fileManager) {
         this.fileManager = fileManager;
         this.users = new ArrayList<>();
@@ -37,20 +42,38 @@ public class UsersDb {
         }
     }
 
+    /**
+     * Gets a user from the database.
+     *
+     * @param player The name to search for
+     * @return the {@link User} object found
+     */
     public User getUser(String player) {
         if (users != null && users.size() > 0) {
             for (User u : users) {
-                if (u.getUsername().equalsIgnoreCase(player)) return u;
+                if (u.getUsername().equalsIgnoreCase(player)) {
+                    return u;
+                }
             }
         }
         return null;
     }
 
+    /**
+     * Adds a user to the database.
+     *
+     * @param u the {@link User} to add
+     */
     public void addUser(User u) {
-        if (this.users == null) this.users = new ArrayList<>();
+        if (this.users == null) {
+            this.users = new ArrayList<>();
+        }
         this.users.add(u);
     }
 
+    /**
+     * Saves the users to a json file.
+     */
     public void save() {
         if (users != null) {
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -61,6 +84,11 @@ public class UsersDb {
         }
     }
 
+    /**
+     * Lists all usersnames as a String.
+     *
+     * @return String of all the usernames splitted by a space
+     */
     public String getUserNames() {
         if (users != null && users.size() > 0) {
             StringBuilder sb = new StringBuilder();
