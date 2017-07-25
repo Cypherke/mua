@@ -94,10 +94,17 @@ public class TeleportMessage extends ChatMessageBase {
 
     @Override
     public boolean handle(String function, String message) throws IOException {
-        String pattern = "Teleported (?<player>[\\w]*) to (?<x>\\-?[0-9\\.]*), (?<y>\\-?[0-9\\.]*), (?<z>\\-?[0-9\\.]*)";
+        String pattern = "Teleported (?<player>[a-zA-Z0-9§]*) to (?<x>\\-?[0-9\\.]*), (?<y>\\-?[0-9\\.]*), (?<z>\\-?[0-9\\.]*)";
         Matcher m = Pattern.compile(pattern).matcher(message);
+
         if (m.matches()) {
             String player = m.group("player");
+
+            // Player is in a team with colours: "§9Nickname§r joined the game"
+            if (player.length() > 0 && player.charAt(0) == '§' && player.charAt(player.length() - 2) == '§') {
+                player = player.substring(2, player.length() - 2);
+            }
+
             User u = getMua().getUsersDb().getUser(player);
 
             u.setCoordinate(new Coordinate(Double.valueOf(m.group("x")), Double.valueOf(m.group("y")), Double.valueOf(m.group("z"))));

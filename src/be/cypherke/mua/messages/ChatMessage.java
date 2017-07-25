@@ -27,14 +27,19 @@ public class ChatMessage extends MessageBase {
     @Override
     public boolean handle(String function, String message) throws IOException {
         if (message.contains("")) {
-            String pattern = "<(?<player>[\\w]*)> (?<chat>.*)";
+            String pattern = "<(?<player>[a-zA-Z0-9§]*)> (?<chat>.*)";
             Matcher m = Pattern.compile(pattern).matcher(message);
 
             if (m.matches()) {
-                String chat = m.group("chat");
                 String player = m.group("player");
+                String chat = m.group("chat");
 
-                boolean handled;
+                // Player is in a team with colours: "§9Nickname§r joined the game"
+                if (player.length() > 0 && player.charAt(0) == '§' && player.charAt(player.length() - 2) == '§') {
+                    player = player.substring(2, player.length() - 2);
+                }
+
+                boolean handled = false;
                 for (ChatMessageBase msg : messages) {
                     handled = msg.handleChat(chat, player);
 

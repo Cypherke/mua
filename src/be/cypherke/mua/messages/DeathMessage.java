@@ -1,6 +1,7 @@
 package be.cypherke.mua.messages;
 
 import be.cypherke.mua.Mua;
+import be.cypherke.mua.gsonobjects.User;
 
 import java.io.IOException;
 
@@ -90,10 +91,19 @@ public class DeathMessage extends MessageBase {
         };
 
         for (String deathMessage : deathMessages) {
+            // Player is in a team with colours: "§9Nickname§r joined the game"
+            if (username.length() > 0 && username.charAt(0) == '§' && username.charAt(username.length() - 2) == '§') {
+                username = username.substring(2, username.length() - 2);
+            }
+
+            User user = getMua().getUsersDb().getUser(username);
+            if (user == null) {
+                return false;
+            }
+
             if (message.contains(deathMessage)) {
-                String user = message.split(" ")[0];
-                getMua().getUsersDb().getUser(user).addDeath();
-                getMua().getOutput().sendMessage("@a", "Congrats " + message.split(" ")[0] + ", this brings your total death count to: " + getMua().getUsersDb().getUser(user).getNumberOfDeaths());
+                user.addDeath();
+                getMua().getOutput().sendMessage("@a", "Congrats " + user.getUsername() + ", this brings your total death count to: " + user.getNumberOfDeaths());
 
                 getMua().printToIRC(user.getUsername() + " just died (#" + user.getNumberOfDeaths() + "): " + message);
 
