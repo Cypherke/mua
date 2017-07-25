@@ -6,4 +6,5 @@
     <entry key="server_workdir">C:\Users\cypher\Documents\IdeaProjects\mua\mcserver</entry>
     <entry key="mua_usersfile">muausers.json</entry>
     <entry key="mua_teleportsfile">muateleports.json</entry>
+    <entry key="irc_channel_file">none</entry>
 </properties>

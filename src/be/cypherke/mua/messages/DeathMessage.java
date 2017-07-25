@@ -19,6 +19,8 @@ public class DeathMessage extends MessageBase {
                 getMua().getUsersDb().getUser(user).addDeath();
                 getMua().getOutput().sendMessage("@a", "Congrats " + message.split(" ")[0] + ", this brings your total death count to: " + getMua().getUsersDb().getUser(user).getNumberOfDeaths());
 
+                getMua().printToIRC(user.getUsername() + " just died (#" + user.getNumberOfDeaths() + "): " + message);
+
                 return true;
             }
         }

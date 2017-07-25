@@ -42,6 +42,11 @@ public class ChatMessage extends MessageBase {
                         break;
                     }
                 }
+
+                // Don't bridge valid server commands to IRC
+                if (!handled && getMua().isIrcBridgeActive()) {
+                    getMua().printToIRC("<" + player + "> " + chat);
+                }
             } else {
                 boolean handled;
                 for (ChatMessageBase msg : messages) {

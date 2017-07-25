@@ -26,6 +26,7 @@ public class LogonMessage extends MessageBase {
             u.setCoordinate(new Coordinate(Double.valueOf(m.group("x")), Double.valueOf(m.group("y")), Double.valueOf(m.group("z"))));
             u.setOnline(true);
 
+            getMua().printToIRC(u.getUsername() + " is online!");
             getMua().getOutput().sendMotd(u.getUsername());
 
             return true;

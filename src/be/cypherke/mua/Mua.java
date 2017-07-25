@@ -2,17 +2,13 @@ package be.cypherke.mua;
 
 import be.cypherke.mua.db.TeleportsDb;
 import be.cypherke.mua.db.UsersDb;
+import be.cypherke.mua.io.IRCListener;
 import be.cypherke.mua.io.LocalFileManager;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.Scanner;
+
+import org.apache.commons.io.input.Tailer;
 
 public class Mua {
 
@@ -20,6 +16,10 @@ public class Mua {
     private Output output;
     private TeleportsDb teleportsDb;
     private Scheduler scheduler;
+
+    private PrintWriter ircwriter;
+    private boolean isIRCActive = false;
+    private boolean ircBridgeActive = false;
 
     private Mua() throws IOException {
         Config config = new Config("mua", "xml");
@@ -44,6 +44,22 @@ public class Mua {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdout));
 
         output = new Output(writer);
+
+        if (!config.getString("irc_channel_file").equals("none")) {
+            isIRCActive = true;
+
+            // Open writer to (ii irc bot) pipe
+            ircwriter = new PrintWriter(new BufferedOutputStream(new FileOutputStream(config.getString("irc_channel_file") + "/in", true)));
+
+            // Open reader from (ii irc bot) output file
+            IRCListener ircListener = new IRCListener();
+            ircListener.setMua(this);
+            File ircOutput = new File(config.getString("irc_channel_file") + "/out");
+            Tailer ircTailer = new Tailer(ircOutput, ircListener, 500, true);
+
+            Thread ircReaderThread = new Thread(ircTailer);
+            ircReaderThread.start();
+        }
 
         Thread inputThread = new Thread(() -> {
             while (true) {
@@ -93,7 +109,6 @@ public class Mua {
             messageHandler.dispatch(line);
             line = reader.readLine();
         }
-
     }
 
     public static void main(final String[] args) {
@@ -114,5 +129,20 @@ public class Mua {
 
     public Output getOutput() {
         return output;
+    }
+
+    public void printToIRC(String msg) {
+        if (!isIRCActive) return;
+
+        ircwriter.println("[MineCraft Server] " + msg);
+        ircwriter.flush();
+    }
+
+    public boolean isIrcBridgeActive() {
+        return this.ircBridgeActive;
+    }
+
+    public void setIrcBridgeActive(boolean active) {
+        this.ircBridgeActive = active;
     }
 }

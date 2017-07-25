@@ -24,6 +24,8 @@ public class LogoffMessage extends MessageBase {
             u.setLastseen(DateTime.now().toString());
             u.setOnline(false);
 
+            getMua().printToIRC(u.getUsername() + " went offline...");
+
             return true;
         }
 
