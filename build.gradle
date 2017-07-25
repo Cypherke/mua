@@ -1,0 +1,77 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'checkstyle'
+
+group = 'be.cypherke.mua'
+version = 'HEAD-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = 'be.cypherke.mua.Mua'
+
+repositories {
+    mavenCentral()
+}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+sourceSets {
+    main {
+        java {
+            srcDir 'src/'
+        }
+    }
+}
+
+checkstyle {
+    toolVersion = "7.6.1"
+    checkstyleMain.configFile = new File(rootDir, "checkstyle.xml")
+    checkstyleMain.source = "src/be/cypherke/mua"
+    checkstyleMain.ignoreFailures = false
+    checkstyleMain.showViolations = true
+}
+
+configurations {
+    compile
+}
+
+dependencies {
+    compile group: 'org.apache.directory.studio', name: 'org.apache.commons.io', version: '2.4'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.21'
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.4'
+    compile group: 'org.mockito', name: 'mockito-core', version: '1.10.19'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'info.cukes', name: 'cucumber-java8', version: '1.2.4'
+    testCompile group: 'info.cukes', name: 'cucumber-junit', version: '1.2.4'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': mainClassName
+        )
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest.from jar.manifest
+    classifier = 'all'
+    from {
+        configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    with jar
+}
+
+artifacts {
+    archives fatJar
+}

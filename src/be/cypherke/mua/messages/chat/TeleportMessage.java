@@ -4,13 +4,14 @@ import be.cypherke.mua.Mua;
 import be.cypherke.mua.gsonobjects.Coordinate;
 import be.cypherke.mua.gsonobjects.Teleport;
 import be.cypherke.mua.gsonobjects.User;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.joda.time.DateTime;
 
 public class TeleportMessage extends ChatMessageBase {
 
@@ -72,6 +73,7 @@ public class TeleportMessage extends ChatMessageBase {
 
                 return true;
             }
+
             if (params.length == 3) {
                 if (params[1].equalsIgnoreCase("add")) {
                     String locationName = params[2];
@@ -83,6 +85,7 @@ public class TeleportMessage extends ChatMessageBase {
 
                     return true;
                 }
+
                 if (params[1].equalsIgnoreCase("delete")) {
                     if (getMua().getTeleportsDb().getUserTps(player).contains(params[2])) {
                         getMua().getTeleportsDb().removeTeleport(player, params[2]);

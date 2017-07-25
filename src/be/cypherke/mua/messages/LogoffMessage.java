@@ -2,11 +2,12 @@ package be.cypherke.mua.messages;
 
 import be.cypherke.mua.Mua;
 import be.cypherke.mua.gsonobjects.User;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.joda.time.DateTime;
 
 public class LogoffMessage extends MessageBase {
 

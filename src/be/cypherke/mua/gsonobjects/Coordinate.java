@@ -5,6 +5,13 @@ public class Coordinate {
     private Double y;
     private Double z;
 
+    /**
+     * Constructor.
+     *
+     * @param x the x of the coordinate
+     * @param y the height of the coordinate
+     * @param z the z of the coordinate
+     */
     public Coordinate(Double x, Double y, Double z) {
         this.x = x;
         this.y = y;

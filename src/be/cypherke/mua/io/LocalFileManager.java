@@ -1,7 +1,5 @@
 package be.cypherke.mua.io;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +7,8 @@ import java.lang.reflect.Type;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import org.apache.commons.io.FileUtils;
 
 public class LocalFileManager implements FileManager {
     private final String fileName;
