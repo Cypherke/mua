@@ -53,11 +53,18 @@ public class TeleportMessage extends ChatMessageBase {
                     }
                     return true;
                 }
-                if (getMua().getTeleportsDb().getUserTps(player) != null && getMua().getTeleportsDb().getUserTps(player).contains(params[1])) {
+                if (getMua().getTeleportsDb().getUserTps(player) != null && getMua().getTeleportsDb().getTp(player, params[1]) != null) {
                     getMua().getOutput().sendTeleport(player, getMua().getTeleportsDb().getTp(player, params[1]).getCoordinate());
                     return true;
                 }
-                if (getMua().getUsersDb().getUserNames() != null && getMua().getUsersDb().getUserNames().contains(params[1]) && getMua().getUsersDb().getUser(params[1]).isOnline()) {
+
+                // Can we teleport to another valid online user?
+                if (
+                    getMua().getUsersDb().getUserNames() != null
+                    && getMua().getUsersDb().getUserNames().contains(params[1])
+                    && getMua().getUsersDb().getUser(params[1]) != null
+                    && getMua().getUsersDb().getUser(params[1]).isOnline()
+                ) {
                     getMua().getOutput().sendTeleport(player, params[1]);
                     return true;
                 }
