@@ -111,7 +111,7 @@ public class TeleportMessage extends ChatMessageBase {
             String player = m.group("player");
 
             // Player is in a team with colours: "§9Nickname§r joined the game"
-            if (player.length() > 0 && player.charAt(0) == '§' && player.charAt(player.length() - 2) == '§') {
+            if (player.length() > 0 && player.charAt(0) == '\u00a7' && player.charAt(player.length() - 2) == '\u00a7') {
                 player = player.substring(2, player.length() - 2);
             }
 

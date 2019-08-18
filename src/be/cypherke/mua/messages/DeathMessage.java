@@ -92,7 +92,7 @@ public class DeathMessage extends MessageBase {
 
         for (String deathMessage : deathMessages) {
             // Player is in a team with colours: "§9Nickname§r joined the game"
-            if (username.length() > 0 && username.charAt(0) == '§' && username.charAt(username.length() - 2) == '§') {
+            if (username.length() > 0 && username.charAt(0) == '\u00a7' && username.charAt(username.length() - 2) == '\u00a7') {
                 username = username.substring(2, username.length() - 2);
             }
 
