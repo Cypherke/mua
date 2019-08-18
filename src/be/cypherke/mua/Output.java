@@ -19,17 +19,17 @@ public class Output {
     }
 
     public void sendTeleport(String who, Coordinate coordinate) throws IOException {
-        writer.write("execute as " + who + " run teleport " + who + " " + coordinate.getX() + " " + coordinate.getY() + " " + coordinate.getZ() + "\n");
+        writer.write("execute as " + who + " run execute at @s run teleport " + who + " " + coordinate.getX() + " " + coordinate.getY() + " " + coordinate.getZ() + "\n");
         writer.flush();
     }
 
     public void sendTeleport(String who, String where) throws IOException {
-        writer.write("execute as " + who + " run teleport " + who + " " + where + "\n");
+        writer.write("execute as " + who + " run execute at @s run teleport " + who + " " + where + "\n");
         writer.flush();
     }
 
     public void sendGetCoordinates(String who) throws IOException {
-        writer.write("execute as " + who + " run teleport " + who + " ~ ~ ~\n");
+        writer.write("execute as " + who + " run execute at @s run teleport " + who + " ~ ~ ~\n");
         writer.flush();
     }
 
