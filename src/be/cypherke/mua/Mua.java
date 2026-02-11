@@ -6,6 +6,7 @@ import be.cypherke.mua.io.IRCListener;
 import be.cypherke.mua.io.LocalFileManager;
 
 import java.io.*;
+import java.time.Duration;
 import java.util.Scanner;
 
 import org.apache.commons.io.input.Tailer;
@@ -57,7 +58,12 @@ public class Mua {
             IRCListener ircListener = new IRCListener();
             ircListener.setMua(this);
             File ircOutput = new File(config.getString("irc_channel_file") + "/out");
-            Tailer ircTailer = new Tailer(ircOutput, ircListener, 500, true);
+            Tailer ircTailer = Tailer.builder()
+                .setFile(ircOutput)
+                .setTailerListener(ircListener)
+                .setDelayDuration(Duration.ofMillis(500))
+                .setTailFromEnd(true)
+                .get();
 
             Thread ircReaderThread = new Thread(ircTailer);
             ircReaderThread.start();
