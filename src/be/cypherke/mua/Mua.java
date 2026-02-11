@@ -41,8 +41,8 @@ public class Mua {
             System.exit(1);
         }
 
-        ProcessBuilder builder = new ProcessBuilder("java", "-Xmx2048M", "-Xms2048M", "-d64", "-XX:+UseConcMarkSweepGC",
-            "-XX:+UseParNewGC", "-XX:+CMSIncrementalPacing", "-XX:ParallelGCThreads=2", "-XX:+AggressiveOpts", "-jar",
+        ProcessBuilder builder = new ProcessBuilder("java", "-Xmx4G", "-Xms4G",
+            "-XX:+UseG1GC", "-XX:ParallelGCThreads=2", "-jar",
             config.getString("server_jar"), "nogui");
         builder.directory(workDir);
 
