@@ -29,10 +29,22 @@ public class Mua {
         scheduler = new Scheduler(this);
         MessageHandler messageHandler = new MessageHandler(this);
 
+        File workDir = new File(config.getString("server_workdir"));
+        if (!workDir.isDirectory()) {
+            System.err.println("server_workdir does not exist: " + workDir.getAbsolutePath());
+            System.exit(1);
+        }
+
+        File serverJar = new File(workDir, config.getString("server_jar"));
+        if (!serverJar.isFile()) {
+            System.err.println("server_jar not found: " + serverJar.getAbsolutePath());
+            System.exit(1);
+        }
+
         ProcessBuilder builder = new ProcessBuilder("java", "-Xmx2048M", "-Xms2048M", "-d64", "-XX:+UseConcMarkSweepGC",
             "-XX:+UseParNewGC", "-XX:+CMSIncrementalPacing", "-XX:ParallelGCThreads=2", "-XX:+AggressiveOpts", "-jar",
             config.getString("server_jar"), "nogui");
-        builder.directory(new File(config.getString("server_workdir")));
+        builder.directory(workDir);
 
         Process process = builder.start();
 
