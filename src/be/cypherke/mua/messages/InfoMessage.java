@@ -5,7 +5,9 @@ import be.cypherke.mua.gsonobjects.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Handles player authentication info messages to extract UUIDs. */
+/**
+ * Handles player authentication info messages to extract UUIDs.
+ */
 public class InfoMessage extends MessageBase {
 
   /**

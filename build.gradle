@@ -27,7 +27,12 @@ sourceSets {
             srcDir 'src/'
         }
     }
-}
+    test {
+        java {
+            srcDir 'test/'
+        }
+    }
+    }
 
 checkstyle {
     toolVersion = "13.2.0"
@@ -38,6 +43,10 @@ checkstyle {
 
 tasks.named('checkstyleMain') {
     source = "src/be/cypherke/mua"
+}
+
+tasks.named('checkstyleTest') {
+    enabled = false
 }
 
 dependencies {
