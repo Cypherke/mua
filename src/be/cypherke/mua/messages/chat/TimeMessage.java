@@ -36,7 +36,7 @@ public class TimeMessage extends ChatMessageBase {
 
   @Override
   public boolean handle(String function, String message) throws IOException {
-    String pattern = "Time is (?<time>[0-9]+)";
+    String pattern = "The time is (?<time>[0-9]+)";
     Matcher m = Pattern.compile(pattern).matcher(message);
     if (m.matches() && timeTriggered) {
       Integer time = Integer.valueOf(m.group("time"));
