@@ -7,54 +7,59 @@ import java.lang.reflect.Type;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import org.apache.commons.io.FileUtils;
 
+/** File manager implementation that reads and writes to the local filesystem. */
 public class LocalFileManager implements FileManager {
-    private final String fileName;
+  private final String fileName;
 
-    public LocalFileManager(String fileName) {
-        this.fileName = fileName;
+  /**
+   * Creates a new LocalFileManager.
+   *
+   * @param fileName the path to the file to manage
+   */
+  public LocalFileManager(String fileName) {
+    this.fileName = fileName;
+  }
+
+  @Override
+  public String load(Type type) {
+    Path path = FileSystems.getDefault().getPath(fileName);
+    File file = path.toFile();
+    if (file.isFile() && file.canRead()) {
+      try {
+        return new String(Files.readAllBytes(path));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    } else {
+      try {
+        FileUtils.touch(file);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
 
-    @Override
-    public String load(Type type) {
-        Path path = FileSystems.getDefault().getPath(fileName);
-        File file = path.toFile();
-        if (file.isFile() && file.canRead()) {
-            try {
-                return new String(Files.readAllBytes(path));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                FileUtils.touch(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    return null;
+  }
 
-        return null;
+  @Override
+  public void save(String content) {
+    FileWriter file = null;
+    try {
+      file = new FileWriter(fileName);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    @Override
-    public void save(String content) {
-        FileWriter file = null;
-        try {
-            file = new FileWriter(fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (file != null) {
-            try {
-                file.write(content);
-                file.flush();
-                file.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    if (file != null) {
+      try {
+        file.write(content);
+        file.flush();
+        file.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
+  }
 }

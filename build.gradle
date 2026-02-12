@@ -30,7 +30,7 @@ sourceSets {
 }
 
 checkstyle {
-    toolVersion = "10.20.0"
+    toolVersion = "13.2.0"
     configFile = file("checkstyle.xml")
     ignoreFailures = false
     showViolations = true
@@ -41,14 +41,14 @@ tasks.named('checkstyleMain') {
 }
 
 dependencies {
-    implementation 'commons-io:commons-io:2.18.0'
-    implementation 'com.google.code.gson:gson:2.11.0'
-    implementation 'org.slf4j:slf4j-simple:2.0.16'
-    implementation 'joda-time:joda-time:2.13.0'
-    testImplementation 'org.mockito:mockito-core:5.14.2'
+    implementation 'commons-io:commons-io:2.21.0'
+    implementation 'com.google.code.gson:gson:2.13.2'
+    implementation 'org.slf4j:slf4j-simple:2.0.17'
+    implementation 'joda-time:joda-time:2.14.0'
+    testImplementation 'org.mockito:mockito-core:5.21.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'io.cucumber:cucumber-java8:7.20.1'
-    testImplementation 'io.cucumber:cucumber-junit:7.20.1'
+    testImplementation 'io.cucumber:cucumber-java:7.34.2'
+    testImplementation 'io.cucumber:cucumber-junit:7.34.2'
 }
 
 jar {
