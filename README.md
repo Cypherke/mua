@@ -1,36 +1,49 @@
-# Minecraft Ultrahardcore Admin
+# Minecraft Ultrahardcore Admin (MUA)
 
-This is a minecraft server plugin that works with any minecraft server.
+A Java wrapper for Minecraft servers that adds chat commands and optional IRC integration.
+MUA starts and manages the server process, reads console output in real-time,
+and responds to player commands by writing back to the server.
+
+## Features
+
+- **Teleportation** (`!tp`) — save, list, delete and teleport to named locations or other players
+- **Coordinate sharing** (`!sc`) — broadcast your current coordinates to all players
+- **Time display** (`!time`) — show the in-game time
+- **IRC bridge** — optionally relay chat between the Minecraft server and an IRC channel via named pipes
 
 ## Prerequisites
-* Prefered tool of choice : [Intellij](http://www.jetbrains.com/idea/)
-* JRE 1.8
+
+- Java 21 or later
+- A Minecraft server jar
 
 ## Install
-##### Install JRE1.8:
-###### windows
-download and install from oracle site
-###### debian
-create file: /etc/apt/sources.list.d/webupd8team-java.list
 
-add to that file: 
+### Install Java
+
+**Windows:** download and install your preferred JDK. See https://whichjdk.com
+
+**Debian/Ubuntu:**
 ```
-deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main
-```
-run command:
-```
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-apt-get update
-apt-get install oracle-java8-installer
+apt install default-jdk
 ```
 
-##### Create a jar from source
-- make a run configuration in the maven projects windows with the following command line parameters: clean package shade:shade
-- Build the program with this new config, copy mua.jar and mua.xml to your directory of choice, edit mua.xml and run program with 
+### Build from source
 
 ```
-java -jar mua.jar
+./gradlew build
+```
+
+This produces `mua-HEAD-SNAPSHOT-all.jar` in `build/libs/`.
+
+### Run
+
+Copy the fat jar and `mua.xml` to your directory of choice, edit `mua.xml` to point to your
+server jar and data files, then run:
+
+```
+java -jar mua-HEAD-SNAPSHOT-all.jar
 ```
 
 ## Contributing
-see [Contributing](CONTRIBUTING.md)
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
