@@ -2,115 +2,123 @@ package be.cypherke.mua.messages;
 
 import be.cypherke.mua.Mua;
 import be.cypherke.mua.gsonobjects.User;
-
 import java.io.IOException;
 
+/** Handles player death events and tracks death counts. */
 public class DeathMessage extends MessageBase {
 
-    public DeathMessage(Mua mua) {
-        super(mua);
+  /**
+   * Creates a new DeathMessage handler.
+   *
+   * @param mua the {@link Mua} instance
+   */
+  public DeathMessage(Mua mua) {
+    super(mua);
+  }
+
+  @Override
+  public boolean handle(String function, String message) throws IOException {
+    String username = message.split(" ")[0];
+
+    // User did a "/me ..." command which starts with a "*"
+    //     [10:56:21] [Server thread/INFO]: * Username withered away
+    if (username.equals("*")) {
+      return false;
     }
 
-    @Override
-    public boolean handle(String function, String message) throws IOException {
-        String username = message.split(" ")[0];
+    // http://minecraft.gamepedia.com/Health#Death_messages
+    String[] deathMessages = {
+        "was shot by",
 
-        // User did a "/me ..." command which starts with a "*"
-        //     [10:56:21] [Server thread/INFO]: * Username withered away
-        if (username.equals("*")) {
-            return false;
-        }
+        "was pricked to death",
+        "hugged a cactus",
+        "walked into a cactus while trying to escape",
+        "was stabbed to death",
 
-        // http://minecraft.gamepedia.com/Health#Death_messages
-        String[] deathMessages = {
-            "was shot by",
+        "drowned",
+        "drowned whilst trying to escape",
 
-            "was pricked to death",
-            "hugged a cactus",
-            "walked into a cactus while trying to escape",
-            "was stabbed to death",
+        "experienced kinetic energy",
+        "removed an elytra while flying",
 
-            "drowned",
-            "drowned whilst trying to escape",
+        "blew up",
+        "was blown up by",
 
-            "experienced kinetic energy",
-            "removed an elytra while flying",
+        "hit the ground too hard",
+        "fell from a high place",
+        "fell off a ladder",
+        "fell off some vines",
+        "fell out of the water",
+        "fell into a patch of fire",
+        "fell into a patch of cacti",
+        "was doomed to fall by",
+        "was shot off some vines by",
+        "was shot off a ladder by",
+        "was blown from a high place by",
 
-            "blew up",
-            "was blown up by",
+        "was squashed by a falling anvil",
+        "was squashed by a falling block",
 
-            "hit the ground too hard",
-            "fell from a high place",
-            "fell off a ladder",
-            "fell off some vines",
-            "fell out of the water",
-            "fell into a patch of fire",
-            "fell into a patch of cacti",
-            "was doomed to fall by",
-            "was shot off some vines by",
-            "was shot off a ladder by",
-            "was blown from a high place by",
+        "went up in flames",
+        "burned to death",
+        "was burnt to a crisp whilst fighting",
+        "walked into a fire whilst fighting",
 
-            "was squashed by a falling anvil",
-            "was squashed by a falling block",
+        "went off with a bang",
 
-            "went up in flames",
-            "burned to death",
-            "was burnt to a crisp whilst fighting",
-            "walked into a fire whilst fighting",
+        "tried to swim in lava",
 
-            "went off with a bang",
+        "was struck by lightning",
 
-            "tried to swim in lava",
+        "discovered floor was lava",
 
-            "was struck by lightning",
+        "was slain by",
+        "got finished off by",
+        "was fireballed by",
 
-            "discovered floor was lava",
+        "was killed by",
 
-            "was slain by",
-            "got finished off by",
-            "was fireballed by",
+        "starved to death",
 
-            "was killed by",
+        "suffocated in a wall",
+        "was squished too much",
 
-            "starved to death",
+        "was killed while trying to hurt",
 
-            "suffocated in a wall",
-            "was squished too much",
+        "fell out of the world",
+        "fell from a high place and fell out of the world",
+        "has been demolished",
 
-            "was killed while trying to hurt",
+        "withered away",
 
-            "fell out of the world",
-            "fell from a high place and fell out of the world",
-            "has been demolished",
+        "was pummeled by",
+        "died"
+    };
 
-            "withered away",
+    for (String deathMessage : deathMessages) {
+      // Player is in a team with colours: "§9Nickname§r joined the game"
+      if (username.length() > 0 && username.charAt(0) == '\u00a7' // § Minecraft color code prefix
+          && username.charAt(username.length() - 2) == '\u00a7') { // § Minecraft color code prefix
+        username = username.substring(2, username.length() - 2);
+      }
 
-            "was pummeled by",
-            "died"
-        };
-
-        for (String deathMessage : deathMessages) {
-            // Player is in a team with colours: "§9Nickname§r joined the game"
-            if (username.length() > 0 && username.charAt(0) == '\u00a7' && username.charAt(username.length() - 2) == '\u00a7') {
-                username = username.substring(2, username.length() - 2);
-            }
-
-            User user = getMua().getUsersDb().getUser(username);
-            if (user == null) {
-                return false;
-            }
-
-            if (message.contains(deathMessage)) {
-                user.addDeath();
-                getMua().getOutput().sendMessage("@a", "Congrats " + user.getUsername() + ", this brings your total death count to: " + user.getNumberOfDeaths());
-
-                getMua().printToIRC(user.getUsername() + " just died (#" + user.getNumberOfDeaths() + "): " + message);
-
-                return true;
-            }
-        }
-
+      User user = getMua().getUsersDb().getUser(username);
+      if (user == null) {
         return false;
+      }
+
+      if (message.contains(deathMessage)) {
+        user.addDeath();
+        getMua().getOutput().sendMessage("@a", "Congrats " + user.getUsername()
+            + ", this brings your total death count to: " + user.getNumberOfDeaths());
+
+        getMua().printToIrc(user.getUsername() + " just died (#" + user.getNumberOfDeaths() + "): "
+            + message);
+
+        return true;
+      }
     }
+
+    return false;
+  }
 }

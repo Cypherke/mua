@@ -1,36 +1,39 @@
 package be.cypherke.mua.gsonobjects;
 
+/** Represents a 3D coordinate in the Minecraft world. */
 public class Coordinate {
-    private Double x;
-    private Double y;
-    private Double z;
+  private Double xcoordinate;
+  private Double ycoordinate;
+  private Double zcoordinate;
 
-    /**
-     * Constructor.
-     *
-     * @param x the x of the coordinate
-     * @param y the height of the coordinate
-     * @param z the z of the coordinate
-     */
-    public Coordinate(Double x, Double y, Double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
+  /**
+   * Constructor.
+   *
+   * @param x the x of the coordinate
+   * @param y the height of the coordinate
+   * @param z the z of the coordinate
+   */
+  public Coordinate(Double x, Double y, Double z) {
+    this.xcoordinate = x;
+    this.ycoordinate = y;
+    this.zcoordinate = z;
+  }
 
-    public String toString() {
-        return x.intValue() + " " + y.intValue() + " " + z.intValue();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public String toString() {
+    return xcoordinate.intValue() + " " + ycoordinate.intValue() + " " + zcoordinate.intValue();
+  }
 
-    public Double getX() {
-        return x;
-    }
+  public Double getXcoordinate() {
+    return xcoordinate;
+  }
 
-    public Double getY() {
-        return y;
-    }
+  public Double getYcoordinate() {
+    return ycoordinate;
+  }
 
-    public Double getZ() {
-        return z;
-    }
+  public Double getZcoordinate() {
+    return zcoordinate;
+  }
 }
